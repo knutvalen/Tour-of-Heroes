@@ -6,7 +6,7 @@ import Permission from './Permission';
   providedIn: 'root'
 })
 export class NotificationsService {
-  notificationPermission: Permission;
+  private notificationPermission: Permission;
   private isBrowserSupported = 'Notification' in window;
 
   constructor() {
