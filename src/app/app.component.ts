@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import NotificationPayload from './NotificationPayload';
 import { NotificationsService } from './notifications.service';
@@ -8,10 +8,14 @@ import { NotificationsService } from './notifications.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Tour of Heroes';
 
   constructor(private notificationsService: NotificationsService) { }
+
+  ngOnInit(): void {
+    this.getPermission();
+  }
 
   getPermission(): void {
     this.notificationsService.requestPermission();

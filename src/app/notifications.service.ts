@@ -16,14 +16,14 @@ export class NotificationsService {
   constructor() {
     this.permission = this.isBrowserSupported
       ? Notification.permission as Permission
-      : Permission.Denied;
+      : Permission.Default;
   }
 
   requestPermission() {
     if (this.isBrowserSupported) {
-      Notification.requestPermission((status: Permission) => {
-        console.log('Permission status: ', status);
-        this.permission = status;
+      Notification.requestPermission((permission: Permission) => {
+        console.log('Permission status: ', permission);
+        this.permission = permission;
       });
     }
   }
@@ -34,12 +34,10 @@ export class NotificationsService {
   ): Observable<NotificationPayload> {
     return new Observable(observer => {
       if (!this.isBrowserSupported) {
-        observer.error('TODO');
+        observer.error('This browser does not support notifications');
         observer.complete();
-      }
-
-      if (this.permission !== Permission.Granted) {
-        observer.error('TODO');
+      } else if (this.permission !== Permission.Granted) {
+        observer.error(`Notifications permission: ${this.permission}`);
         observer.complete();
       }
 
