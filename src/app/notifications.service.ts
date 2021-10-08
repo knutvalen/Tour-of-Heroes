@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import Permission from './Permission';
-import NotificationOptions from './NotificationOptions';
-import NotificationPayload from './NotificationPayload';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +28,7 @@ export class NotificationsService {
   createNotification(
     title: string,
     options?: NotificationOptions
-  ): Observable<NotificationPayload> {
+  ): Observable<{ notification: Notification, event: Event }> {
     return new Observable(observer => {
       if (!this.isBrowserSupported) {
         observer.error('This browser does not support notifications');
@@ -42,13 +40,13 @@ export class NotificationsService {
 
       const notification = new Notification(title, options);
 
-      notification.onshow = (event: any) => observer
+      notification.onshow = (event: Event) => observer
         .next({ notification: notification, event: event });
 
-      notification.onclick = (event: any) => observer
+      notification.onclick = (event: Event) => observer
         .next({ notification: notification, event: event });
 
-      notification.onerror = (event: any) => observer
+      notification.onerror = (event: Event) => observer
         .error({ notification: notification, event: event });
 
       notification.onclose = () => observer.complete();

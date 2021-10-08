@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { tap } from 'rxjs/operators';
-import NotificationPayload from './NotificationPayload';
 import { NotificationsService } from './notifications.service';
 
 @Component({
@@ -23,8 +22,8 @@ export class AppComponent implements OnInit {
 
   notifyMe(): void {
     this.notificationsService.createNotification('Hello world').pipe(
-      tap((payload: NotificationPayload) => console.log(`Notification payload: ${JSON.stringify(payload)}`))
-    ).subscribe((payload: NotificationPayload) => {
+      tap(payload => console.log(`Notification payload: ${JSON.stringify(payload)}`))
+    ).subscribe(payload => {
       if (payload.event.type === 'click') {
         console.log('closing notification');
         payload.notification.close();
