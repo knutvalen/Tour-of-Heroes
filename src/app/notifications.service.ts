@@ -4,27 +4,26 @@ import Permission from './Permission';
 import NotificationOptions from './NotificationOptions';
 import NotificationPayload from './NotificationPayload';
 
-declare const Notification: any;
-
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationsService {
-  permission: Permission;
+  notificationPermission: Permission;
   private isBrowserSupported = 'Notification' in window;
 
   constructor() {
-    this.permission = this.isBrowserSupported
+    this.notificationPermission = this.isBrowserSupported
       ? Notification.permission as Permission
       : Permission.Default;
   }
 
   requestPermission() {
     if (this.isBrowserSupported) {
-      Notification.requestPermission((permission: Permission) => {
-        console.log('Permission status: ', permission);
-        this.permission = permission;
-      });
+      Notification.requestPermission()
+        .then((notificationPermission: NotificationPermission) => {
+          console.log('Permission status: ', notificationPermission);
+          this.notificationPermission = notificationPermission as Permission;
+        });
     }
   }
 
@@ -36,8 +35,8 @@ export class NotificationsService {
       if (!this.isBrowserSupported) {
         observer.error('This browser does not support notifications');
         observer.complete();
-      } else if (this.permission !== Permission.Granted) {
-        observer.error(`Notifications permission: ${this.permission}`);
+      } else if (this.notificationPermission as Permission !== Permission.Granted) {
+        observer.error(`Notifications permission: ${this.notificationPermission}`);
         observer.complete();
       }
 
