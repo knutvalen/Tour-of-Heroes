@@ -3,5 +3,9 @@
   <a routerLink="/dashboard">Dashboard</a>
   <a routerLink="/heroes">Heroes</a>
 </nav>
+<div>
+  <button (click)="getPermission()">Subscribe</button>
+  <button (click)="notifyMe()">Make a notification</button>
+</div>
 <router-outlet></router-outlet>
 <app-messages></app-messages>
